@@ -40,11 +40,26 @@ describe('Contact Form tests', () => {
     });
     
     test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
-    
+        const inputFirst = screen.getByLabelText(/first name*/i);
+        userEvent.type(inputFirst, 'nathan');
+
+        const inputLast = screen.getByLabelText(/last name*/i);
+        userEvent.type(inputLast, 'nichols');
+
+        const submitBtn = screen.getByRole('button');
+        userEvent.click(submitBtn);
+
+        const errorMessages =await screen.queryAllByTestId('error');
+        expect(errorMessages).toHaveLength(1);
+
     });
-    
+
     test('renders "email must be a valid email address" if an invalid email is entered', async () => {
-    
+        const inputEmail = screen.getByLabelText(/email*/i);
+        userEvent.type(inputEmail, 'fds.com');
+
+        const errorMessages =await screen.queryAllByTestId('error');
+        expect(errorMessages).toHaveLength(1);
     });
     
     test('renders "lastName is a required field" if an last name is not entered and the submit button is clicked', async () => {
